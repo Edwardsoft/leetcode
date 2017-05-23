@@ -17,31 +17,30 @@ public class Test1 {
 	*/
 
 	public static int minimumTotal(ArrayList<ArrayList<Integer>> triangle) {
-	    ArrayList<Integer> d=new ArrayList<>();
-	    d.add(triangle.get(0).get(0));
+	    int []d=new int [1];
+	    d[0]=triangle.get(0).get(0).intValue();
 	    for(int i=1;i<triangle.size();i++) {
-	    	int begin=d.get(0).intValue();
-	    	int end=d.get(i-1).intValue();
-	    	for(int j=1;j<i;j++) {
-	            int num1=d.get(j-1).intValue();
-	            int num2=d.get(j).intValue();
-	            int min=num1;
-	            if(num2<min) {
-	            	min=num2;
-	            }
-	            d.set(j,min+triangle.get(i).get(j).intValue());
-	        }
-	    	int now1=triangle.get(i).get(i).intValue();
-	    	d.add(end+now1);
-            int now=triangle.get(i).get(0).intValue();
-	    	d.set(0,begin+now);
+	    	d=dp(d,triangle,i);
 	    }
 	    int min=Integer.MAX_VALUE;
-	    for(int i=0;i<d.size();i++) {
-	    	if(min>d.get(i)) {
-	    		min=d.get(i);
+	    for(int i=0;i<d.length;i++) {
+	    	if(min>d[i]) {
+	    		min=d[i];
 	    	}
 	    }
 	    return min;
+	}
+	public static int [] dp(int []d,ArrayList<ArrayList<Integer>> triangle,int now) {
+		int []p=new int [d.length+1];
+		p[0]=d[0]+triangle.get(now).get(0).intValue();
+		p[now]=d[now-1]+triangle.get(now).get(now).intValue();
+    	for(int j=1;j<now;j++) {
+	        int min=d[j-1];
+	        if(d[j]<min) {
+	        	min=d[j];
+	        }
+	        p[j]=min+triangle.get(now).get(j).intValue();
+	    }
+		return p;
 	}
 }
